@@ -49,17 +49,133 @@ def create_board():
     board[7][4].type = "Q"
     
 
-    for i in range(8):
-        for j in range(8):
-            print(board[i][j].type, end = " ")
-        print()
+    # for i in range(8):
+    #     for j in range(8):
+    #         print(board[i][j].type, end = " ")
+    #     print()
 
     
     return board
 
+def valid_move_rook(board, move):
+
+
+
+    if (move[0] == move[2]):
+        #the piece is moving along the rows
+        move_vector = move[3]-move[1]
+        vector_sign = 1
+
+        if (move_vector < 0):
+            vector_sign = -1
+
+        #for if it only moves 1 square
+        if (abs(move_vector) == 1):
+            if(board[move[0]][move[1]].color == board[move[2]][move[3]].color):
+                print("you are trying to move to the same color")
+                return False 
+            return True
+
+        for i in range(abs(move_vector)-1):
+
+            if(board[move[0]][move[1]+(1+i*vector_sign)].type != "0" ):
+                print("you can't jump over other pieces")
+                return False
+        return True
+
+    if (move[1] == move[3]):
+        #the piece is moving along the rows
+        move_vector = move[2]-move[0]
+        vector_sign = 1
+
+        if (move_vector < 0):
+            vector_sign = -1
+
+        #for if it only moves 1 square
+        if (abs(move_vector) == 1):
+            if(board[move[0]][move[1]].color == board[move[2]][move[3]].color):
+                print("you are trying to move to the same color")
+                return False 
+            return True
+
+        for i in range(abs(move_vector)-1):
+
+            if(board[move[0]+(1+i*vector_sign)][move[1]].type != "0" ):
+                print("you can't jump over other pieces")
+                return False
+        return True
+    
+    print("couldn't move the rook there")
+    return False
+
+
 
 
 def make_move(board, move, player):
+    
+    if (move[0] == move[2] and move[1] == move[3]):
+        print("can't move the piece to the same spot")
+        return False
+    
+    #if the move is out of bounds
+    for i in range(4):
+        if (move[i] > 7 and move[i] < 0 ):
+            print("Move was out of bounds")
+            return False
+    
+
+    #checks if the color of the piece at the first position is the same as the player
+    if(board[move[0]][move[1]].color == player.color):
+
+        moving_piece = board[move[0]][move[1]]
+
+        if(moving_piece.type.lower() == "r"):
+
+            #checking if the move is a valid move
+            if (valid_move_rook(board, move)):
+                #make move
+                print("the move is valid")
+                board[move[2]][move[3]] = board[move[0]][move[1]]
+                board[move[0]][move[1]] = Piece("0","0")
+                return True
 
 
+            
+
+
+
+
+
+        return False
+    print("this is not your piece")
+    return False
+
+def start_game():
+    board = create_board()
+    p1 = Player("b")
+    p2 = Player("W")
+    print(p1.color, p2.color)
+
+
+
+
+    for i in range(8):
+        for j in range(8):
+            print(board[i][j].type, end = " ")
+        print()    
+
+    while(True):
+
+
+        print(make_move(board, [4,0,4,2],p1))
+        for i in range(8):
+            for j in range(8):
+                print(board[i][j].type, end = " ")
+            print()
+
+        return True    
+        
+
+
+start_game()
     
