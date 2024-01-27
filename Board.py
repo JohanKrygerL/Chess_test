@@ -4,7 +4,11 @@ class Piece:
     def __init__(self, type, color):
         self.type = type
         self.color = color
-    
+
+class Player:
+    def __init__(self, color):
+        self.color = color
+        pass
 
 
 
@@ -50,14 +54,12 @@ def create_board():
             print(board[i][j].type, end = " ")
         print()
 
+    
+    return board
 
 
+
+def make_move(board, move, player):
 
 
     
-    return 
-
-
-
-
-create_board()
